@@ -3,6 +3,7 @@ extends Node
 var network = NetworkedMultiplayerENet.new()
 var SERVER_PORT = 1909
 var MAX_PLAYERS = 4
+#var player_container = preload("res://Scripts/PlayerContainer.gd")
 
 
 func _ready():
@@ -20,7 +21,21 @@ func start_server():
 
 func _peer_connected(player_id):
 	print("User " + str(player_id) + " connected")
-
+	create_player_container(player_id)
+	
 
 func _peer_disconnected(player_id):
 	print("User " + str(player_id) + " disconnected")
+
+
+remote func register_player(player_name):
+	var player_id = get_tree().get_rpc_sender_id()
+	$GameState.players[player_id] = player_name
+	print(player_name)
+#	rpc_id(player_id, "test_id", player_id, requester)
+	
+
+func create_player_container(player_id):
+	var new_player_container = PlayerContainer.new()
+	new_player_container.name = str(player_id)
+	get_parent().add_child(new_player_container, true)
