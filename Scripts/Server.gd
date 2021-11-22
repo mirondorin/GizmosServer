@@ -21,18 +21,17 @@ func start_server():
 
 func _peer_connected(player_id):
 	print("User " + str(player_id) + " connected")
-	create_player_container(player_id)
 	
 
 func _peer_disconnected(player_id):
 	print("User " + str(player_id) + " disconnected")
+	$GameState.players.erase(player_id)
 
 
 remote func register_player(player_name):
 	var player_id = get_tree().get_rpc_sender_id()
 	$GameState.players[player_id] = player_name
-	print(player_name)
-#	rpc_id(player_id, "test_id", player_id, requester)
+	rpc_id(0, "return_player_list", $GameState.players)
 	
 
 func create_player_container(player_id):
