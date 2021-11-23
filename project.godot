@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "Deck",
+"language": "GDScript",
+"path": "res://Scripts/Deck.gd"
+}, {
+"base": "Node",
 "class": "PlayerContainer",
 "language": "GDScript",
 "path": "res://Scripts/PlayerContainer.gd"
 } ]
 _global_script_class_icons={
+"Deck": "",
 "PlayerContainer": ""
 }
 
