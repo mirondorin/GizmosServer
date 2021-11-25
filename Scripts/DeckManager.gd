@@ -7,12 +7,16 @@ var revealed_cards
 var start_card
 
 
+const TIER_THREE_REMOVE = 20
+
+
 func _init():
 	var deck_obj = Deck.new()
 	deck = deck_obj.get_deck()
 	tier_decks = [[], [], []]
 	revealed_cards = [[], [], []]
 	set_deck()
+	remove_tier_cards(3, TIER_THREE_REMOVE)
 
 
 # Returns true if card is implemented. 
@@ -38,6 +42,17 @@ func set_deck() -> void:
 	start_card = deck[str(deck.size() - 1)] # Last card from deck is start_card
 
 
+# Removes cards from tier deck. Tier is 0 index based
+func remove_tier_cards(tier: int, count: int) -> void:
+	# Already removed 6 unimplemented cards. TODO remove if later
+	randomize()
+	if tier == 3:
+		count = 14
+	for _it in range(count):
+		var rand_card_id = tier_decks[tier-1][randi() % tier_decks[tier-1].size()]
+		tier_decks[tier-1].erase(rand_card_id)
+
+
 # Reveal new card to players and remove it from tier_decks
 func add_revealed_card(tier: int) -> void:
 	var rand_card_id = tier_decks[tier][randi() % tier_decks[tier].size()]
@@ -56,7 +71,8 @@ func fill_revealed_tier(tier: int) -> void:
 
 
 # Fills all revealed_cards rows
-func fill_all_revealed():
+func fill_all_revealed() -> void:
+	randomize()
 	for tier in range(0, 3):
 		fill_revealed_tier(tier)
 
@@ -69,9 +85,9 @@ func get_card_json(card_deck_id: int) -> Dictionary:
 	return deck[str(card_deck_id)]
 
 
-func get_revealed_list():
-	var card_list = []
-	for tier in range(len(revealed_cards)):
-		for id in revealed_cards[tier]:
-			var card_json = get_card_json(get_card_deck_id(id, tier))
-			card_list.append(card_json)
+#func get_revealed_list():
+#	var card_list = []
+#	for tier in range(len(revealed_cards)):
+#		for id in revealed_cards[tier]:
+#			var card_json = get_card_json(get_card_deck_id(id, tier))
+#			card_list.append(card_json)

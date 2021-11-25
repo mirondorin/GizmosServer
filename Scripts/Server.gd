@@ -51,7 +51,16 @@ remote func player_loaded():
 
 func _on_GameState_players_loaded():
 	$DeckManager.fill_all_revealed()
+	$EnergyManager.restock_energy_row()
 
 
 func add_revealed_card(card_json: Dictionary):
 	rpc_id(0, "add_revealed_card", card_json)
+
+
+remote func fetch_energy_row():
+	rpc_id(0, "return_energy_row", $EnergyManager.energy_row)
+
+
+func add_to_energy_row(energy_row: Array):
+	rpc_id(0, "return_energy_row", energy_row)
