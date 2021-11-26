@@ -29,7 +29,7 @@ func remove_player(player_id: int) -> void:
 
 
 # Player finished loading assets
-func set_player_loaded(player_id: int):
+func set_player_loaded(player_id: int) -> void:
 	loaded_players[player_id] = true
 	if all_players_loaded():
 		emit_signal("players_loaded")
@@ -56,3 +56,8 @@ func is_game_ready() -> bool:
 # If all players loaded assets, setup game
 func all_players_loaded() -> bool:
 	return players.size() == loaded_players.size()
+
+
+func _on_DeckManager_player_received_card(player_id, card_deck_id):
+	get_node(str(player_id)).add_card(card_deck_id)
+	print(get_node(str(player_id)).stats)

@@ -7,7 +7,11 @@ var revealed_cards
 var start_card
 
 
+enum {ACTIVE_GIZMO, ARCHIVED_GIZMO, RESEARCH_GIZMO, REVEALED_GIZMO}
 const TIER_THREE_REMOVE = 20
+const START_CARD_ID = 108
+
+signal player_received_card(player_id, card_deck_id)
 
 
 func _init():
@@ -60,6 +64,7 @@ func add_revealed_card(tier: int) -> void:
 	revealed_cards[tier].push_back(rand_card_id)
 	
 	var card_json = get_card_json(get_card_deck_id(rand_card_id, tier))
+	$CardManager.set_card_status(card_json, REVEALED_GIZMO)
 	get_parent().add_revealed_card(card_json)
 
 
@@ -83,6 +88,22 @@ func get_card_deck_id(card_tier_id: int, tier: int) -> int:
 
 func get_card_json(card_deck_id: int) -> Dictionary:
 	return deck[str(card_deck_id)]
+
+
+func get_tier_decks_count() -> Array:
+	var tier_decks_count = [[], [], []]
+	for tier in range(0, 3):
+		tier_decks_count[tier] = tier_decks[tier].size()
+	return tier_decks_count
+
+
+func get_start_card(player_id: int) -> Dictionary:
+	var new_start_card = start_card
+	$CardManager.set_card_status(new_start_card, ACTIVE_GIZMO)
+	$CardManager.set_card_usable(new_start_card, true)
+	$CardManager.set_card_owner(new_start_card, player_id)
+	emit_signal("player_received_card", player_id, START_CARD_ID)
+	return new_start_card
 
 
 #func get_revealed_list():

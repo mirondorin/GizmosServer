@@ -54,6 +54,11 @@ func _on_GameState_players_loaded():
 	$EnergyManager.restock_energy_row()
 
 
+remote func fetch_start_card():
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "return_start_card", $DeckManager.get_start_card(player_id))
+
+
 func add_revealed_card(card_json: Dictionary):
 	rpc_id(0, "add_revealed_card", card_json)
 
@@ -64,3 +69,9 @@ remote func fetch_energy_row():
 
 func add_to_energy_row(energy_row: Array):
 	rpc_id(0, "return_energy_row", energy_row)
+
+
+remote func fetch_tier_decks_count():
+	var tier_decks_count = $DeckManager.get_tier_decks_count()
+	rpc_id(0, "return_tier_decks_count", tier_decks_count)
+

@@ -39,3 +39,7 @@ var disabled_actions = {
 }
 var used_action = false
 var using_action = false
+
+
+func add_card(card_deck_id: int):
+	stats['gizmos'].append(card_deck_id)
