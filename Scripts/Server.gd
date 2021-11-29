@@ -24,18 +24,18 @@ func _peer_connected(player_id: int):
 
 func _peer_disconnected(player_id: int):
 	print("User " + str(player_id) + " disconnected")
-	$GameState.remove_player(player_id)
+	$GameState.remove_player(str(player_id))
 	rpc_id(0, "set_player_list", $GameState.players)
 
 
-remote func register_player(player_name):
-	var player_id = get_tree().get_rpc_sender_id()
+remote func register_player(player_name: String):
+	var player_id = str(get_tree().get_rpc_sender_id())
 	$GameState.players[player_id] = player_name
 	rpc_id(0, "set_player_list", $GameState.players)
 	
 
 remote func set_player_status(player_status: bool):
-	var player_id = get_tree().get_rpc_sender_id()
+	var player_id = str(get_tree().get_rpc_sender_id())
 	$GameState.set_player_status(player_id, player_status)
 	rpc_id(0, "set_ready_players", $GameState.ready_players)
 
@@ -45,18 +45,29 @@ func _on_GameState_game_ready():
 
 
 remote func player_loaded():
-	var player_id = get_tree().get_rpc_sender_id()
+	var player_id = str(get_tree().get_rpc_sender_id())
 	$GameState.set_player_loaded(player_id)
 
 
 func _on_GameState_players_loaded():
 	$DeckManager.fill_all_revealed()
 	$EnergyManager.restock_energy_row()
+	rpc_id(0, "setup_game")
+
+
+remote func fetch_player_order():
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "return_player_order", $GameState.player_order)
+
+
+remote func fetch_active_player():
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "return_active_player", $GameState.get_active_player())
 
 
 remote func fetch_start_card():
-	var player_id = get_tree().get_rpc_sender_id()
-	rpc_id(player_id, "return_start_card", $DeckManager.get_start_card(player_id))
+	var player_id = str(get_tree().get_rpc_sender_id())
+	rpc_id(0, "return_start_card", $DeckManager.get_start_card(player_id), player_id)
 
 
 func add_revealed_card(card_json: Dictionary):
@@ -72,6 +83,5 @@ func add_to_energy_row(energy_row: Array):
 
 
 remote func fetch_tier_decks_count():
-	var tier_decks_count = $DeckManager.get_tier_decks_count()
-	rpc_id(0, "return_tier_decks_count", tier_decks_count)
+	rpc_id(0, "return_tier_decks_count", $DeckManager.get_tier_decks_count())
 

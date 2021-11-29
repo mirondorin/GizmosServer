@@ -97,7 +97,7 @@ func get_tier_decks_count() -> Array:
 	return tier_decks_count
 
 
-func get_start_card(player_id: int) -> Dictionary:
+func get_start_card(player_id: String) -> Dictionary:
 	var new_start_card = start_card
 	$CardManager.set_card_status(new_start_card, ACTIVE_GIZMO)
 	$CardManager.set_card_usable(new_start_card, true)

@@ -1,7 +1,7 @@
 extends Node
 
 
-func set_card_owner(card_json: Dictionary, player_id: int) -> void:
+func set_card_owner(card_json: Dictionary, player_id: String) -> void:
 	card_json['owner_id'] = player_id
 
 
