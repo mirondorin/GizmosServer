@@ -2,6 +2,7 @@ extends Node
 
 class_name PlayerContainer
 
+const action = ["archive", "pick", "build", "research"]
 
 var nickname
 
@@ -38,8 +39,35 @@ var disabled_actions = {
 	"research": false
 }
 var used_action = false
-var using_action = false
 
 
-func add_card(card_deck_id: int):
+func set_used_action(status: bool) -> void:
+	used_action = status
+
+
+func set_free_action_count(action_id: int, count: int) -> void:
+	free_action[action[action_id]] = count
+
+
+func get_free_action_count(action_id: int) -> int:
+	return free_action[action[action_id]]
+
+
+# Returns total energy of player
+func get_energy_count() -> int:
+	var sum = 0
+	for count in stats['energy']:
+		sum += count
+	return sum
+
+
+func get_energy_space() -> int:
+	return stats['max_energy'] - get_energy_count()
+
+
+func add_energy(energy_type: int) -> void:
+	stats['energy'][energy_type] += 1
+
+
+func add_card(card_deck_id: int) -> void:
 	stats['gizmos'].append(card_deck_id)

@@ -85,3 +85,12 @@ func add_to_energy_row(energy_row: Array):
 remote func fetch_tier_decks_count():
 	rpc_id(0, "return_tier_decks_count", $DeckManager.get_tier_decks_count())
 
+
+remote func process_event(action_id: int, info):
+	var player_id = str(get_tree().get_rpc_sender_id())
+	var player_container = $GameState.get_player_container(player_id)
+	$EventProcessor.process_event(player_container, action_id, info)
+
+
+func player_stats_updated(player_id: String, player_stats: Dictionary):
+	rpc_id(0, "player_stats_updated", player_id, player_stats)

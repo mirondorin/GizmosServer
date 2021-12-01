@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Server.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/GameState.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/DeckManager.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/EnergyManager.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/EventProcessor.tscn" type="PackedScene" id=5]
 
 [node name="Server" type="Node"]
 script = ExtResource( 1 )
@@ -13,6 +14,8 @@ script = ExtResource( 1 )
 [node name="DeckManager" parent="." instance=ExtResource( 3 )]
 
 [node name="EnergyManager" parent="." instance=ExtResource( 4 )]
+
+[node name="EventProcessor" parent="." instance=ExtResource( 5 )]
 [connection signal="game_ready" from="GameState" to="." method="_on_GameState_game_ready"]
 [connection signal="players_loaded" from="GameState" to="." method="_on_GameState_players_loaded"]
 [connection signal="player_received_card" from="DeckManager" to="GameState" method="_on_DeckManager_player_received_card"]

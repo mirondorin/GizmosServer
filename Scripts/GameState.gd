@@ -76,5 +76,10 @@ func get_active_player() -> String:
 	return player_order[0]
 
 
+# Returns player container node
+func get_player_container(player_id: String):
+	return get_node(player_id)
+
+
 func _on_DeckManager_player_received_card(player_id: String, card_deck_id: int) -> void:
 	get_node(player_id).add_card(card_deck_id)

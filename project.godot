@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "ActionProcessor",
+"language": "GDScript",
+"path": "res://Scripts/ActionProcessor.gd"
+}, {
+"base": "Node",
 "class": "Deck",
 "language": "GDScript",
 "path": "res://Scripts/Deck.gd"
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://Scripts/PlayerContainer.gd"
 } ]
 _global_script_class_icons={
+"ActionProcessor": "",
 "Deck": "",
 "PlayerContainer": ""
 }
