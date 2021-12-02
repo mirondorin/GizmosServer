@@ -22,6 +22,5 @@ func use_free_action(player_container) -> bool:
 	if free_action_count > 0:
 		free_action_count -=1
 		player_container.set_free_action_count(action_id, free_action_count)
-		print(player_container.free_action)
 		return true
 	return false

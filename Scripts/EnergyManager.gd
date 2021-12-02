@@ -1,8 +1,8 @@
 extends Node
 
 
-var energy_dispenser
-var energy_row
+var energy_dispenser = []
+var energy_row = [0, 0, 0, 0]
 
 const MAX_ENERGY_TYPE = 13
 const MAX_ENERGY_ROW = 6
@@ -13,8 +13,6 @@ enum {RED, YELLOW, BLUE, BLACK}
 
 
 func _init():
-	energy_dispenser = []
-	energy_row = [0, 0, 0, 0]
 	init_energy_dispenser_row()
 
 
@@ -31,7 +29,11 @@ func init_energy_dispenser_row() -> void:
 func add_to_energy_row() -> void:
 	var rand_energy = rand_from_dispenser()
 	energy_row[rand_energy] += 1
-	get_parent().add_to_energy_row(energy_row)
+	get_tree().get_root().get_node("Server").add_to_energy_row(energy_row)
+
+
+func remove_from_energy_row(energy_type: int) -> void:
+	energy_row[energy_type] -= 1
 
 
 # Fills energy row
@@ -59,9 +61,19 @@ func add_to_energy_dispenser(energy_arr: Array) -> void:
 			energy_dispenser.append(energy_type)
 
 
+func give_player_energy(player_container, energy_type: int) -> void:
+	player_container.add_energy(energy_type)
+	remove_from_energy_row(energy_type)
+	add_to_energy_row()
+
+
 # Returns total energy in energy_row
 func get_energy_row_sum() -> int:
 	var sum = 0
 	for count in energy_row:
 		sum += count
 	return sum
+
+
+func get_row_type_amount(energy_type: int) -> int:
+	return energy_row[energy_type]

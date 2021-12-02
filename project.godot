@@ -35,6 +35,10 @@ _global_script_class_icons={
 config/name="GizmosServer"
 run/main_scene="res://Scenes/Server.tscn"
 
+[autoload]
+
+EnergyManager="*res://Scripts/EnergyManager.gd"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
