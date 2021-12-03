@@ -55,14 +55,22 @@ func _on_GameState_players_loaded():
 	rpc_id(0, "setup_game")
 
 
+func send_status_msg(player_id: String, msg: String):
+	rpc_id(int(player_id), "receive_status_msg", msg)
+
+
 remote func fetch_player_order():
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_player_order", $GameState.player_order)
 
 
-remote func fetch_active_player():
+remote func fetch_first_player():
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_active_player", $GameState.get_active_player())
+
+
+func new_active_player():
+	rpc_id(0, "return_active_player", $GameState.get_active_player())
 
 
 remote func fetch_start_card():
@@ -94,3 +102,11 @@ remote func process_event(action_id: int, info):
 
 func player_stats_updated(player_id: String, player_stats: Dictionary):
 	rpc_id(0, "player_stats_updated", player_id, player_stats)
+
+
+func display_end_btn(player_id: String):
+	rpc_id(int(player_id), "display_end_btn")
+
+
+remote func end_turn():
+	$GameState.end_turn()

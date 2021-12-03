@@ -23,6 +23,7 @@ func available_action(player_container) -> bool:
 func use_first_avaiable_action(player_container) -> void:
 	var used_action = use_action(player_container)
 	if used_action:
+		Server.display_end_btn(player_container.peer_id)
 		return
 	used_action = use_free_action(player_container)
 

@@ -14,7 +14,8 @@ func process_event(player_container, action_id: int, info):
 	var action_ok = action_processor.attempt_action(player_container, info)
 	
 	if action_ok:
-		get_parent().player_stats_updated(player_container.name, player_container.stats)
+		Server.player_stats_updated(player_container.peer_id, player_container.stats)
+		Server.send_status_msg(player_container.peer_id, "")
 
 
 func get_action_processor(action_id: int):

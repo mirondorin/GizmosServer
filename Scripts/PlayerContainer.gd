@@ -5,6 +5,7 @@ class_name PlayerContainer
 const action = ["archive", "pick", "build", "research"]
 
 var nickname
+var peer_id
 
 var stats = {
 	"max_energy": 5,

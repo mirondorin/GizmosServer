@@ -40,7 +40,8 @@ func set_player_loaded(player_id: String) -> void:
 # Creates player node
 func create_player_container(player_id: String) -> void:
 	var new_player_container = PlayerContainer.new()
-	new_player_container.name = str(player_id)
+	new_player_container.name = player_id
+	new_player_container.peer_id = player_id
 	add_child(new_player_container, true)
 
 
@@ -72,6 +73,14 @@ func generate_player_order():
 		player_order.append(player_id)
 
 
+# Adds last active player at end of player order array
+func set_next_player():
+	print("Before: ", player_order)
+	var last_active_player = player_order.pop_front()
+	player_order.push_back(last_active_player)
+	print("After: ", player_order)
+
+
 func get_active_player() -> String:
 	return player_order[0]
 
@@ -83,3 +92,15 @@ func get_player_container(player_id: String):
 
 func _on_DeckManager_player_received_card(player_id: String, card_deck_id: int) -> void:
 	get_node(player_id).add_card(card_deck_id)
+
+
+func reset_player_status(player_id: String):
+	var player_container = get_player_container(player_id)
+	player_container.set_used_action(false)
+	
+
+func end_turn() -> void:
+	# TODO: Reset flags, action, free actions and excess energy of player
+	reset_player_status(get_active_player())
+	set_next_player()
+	Server.new_active_player()

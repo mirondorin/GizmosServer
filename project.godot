@@ -33,11 +33,12 @@ _global_script_class_icons={
 [application]
 
 config/name="GizmosServer"
-run/main_scene="res://Scenes/Server.tscn"
+run/main_scene="res://Scenes/SceneHandler.tscn"
 
 [autoload]
 
 EnergyManager="*res://Scripts/EnergyManager.gd"
+Server="*res://Scenes/Server.tscn"
 
 [rendering]
 
