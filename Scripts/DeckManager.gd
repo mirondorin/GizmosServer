@@ -104,11 +104,3 @@ func get_start_card(player_id: String) -> Dictionary:
 	$CardManager.set_card_owner(new_start_card, player_id)
 	emit_signal("player_received_card", player_id, START_CARD_ID)
 	return new_start_card
-
-
-#func get_revealed_list():
-#	var card_list = []
-#	for tier in range(len(revealed_cards)):
-#		for id in revealed_cards[tier]:
-#			var card_json = get_card_json(get_card_deck_id(id, tier))
-#			card_list.append(card_json)

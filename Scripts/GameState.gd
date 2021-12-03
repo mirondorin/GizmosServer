@@ -94,9 +94,11 @@ func _on_DeckManager_player_received_card(player_id: String, card_deck_id: int) 
 	get_node(player_id).add_card(card_deck_id)
 
 
+# Reset flags, action, free actions and excess energy of player
 func reset_player_status(player_id: String):
 	var player_container = get_player_container(player_id)
 	player_container.set_used_action(false)
+	FlagManager.reset_player_flags(player_container)
 	
 
 func end_turn() -> void:

@@ -100,6 +100,11 @@ remote func process_event(action_id: int, info):
 	$EventProcessor.process_event(player_container, action_id, info)
 
 
+# Used for successful action at start of turn
+func successful_action(player_id: String):
+	rpc_id(int(player_id), "successful_action")
+	
+
 func player_stats_updated(player_id: String, player_stats: Dictionary):
 	rpc_id(0, "player_stats_updated", player_id, player_stats)
 

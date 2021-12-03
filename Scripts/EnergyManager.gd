@@ -62,6 +62,7 @@ func add_to_energy_dispenser(energy_arr: Array) -> void:
 
 
 func give_player_energy(player_container, energy_type: int) -> void:
+	FlagManager.player_picked(player_container, energy_type)
 	player_container.add_energy(energy_type)
 	remove_from_energy_row(energy_type)
 	add_to_energy_row()
