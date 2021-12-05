@@ -70,5 +70,14 @@ func add_energy(energy_type: int) -> void:
 	stats['energy'][energy_type] += 1
 
 
+# Returns number of archived cards player has
+func get_archive_amount() -> int:
+	return stats['archive'].size()
+
+
+func get_archive_space() -> int:
+	return stats['max_archive'] - get_archive_amount()
+	
+
 func add_card(card_deck_id: int) -> void:
 	stats['gizmos'].append(card_deck_id)

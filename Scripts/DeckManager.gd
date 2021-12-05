@@ -38,6 +38,11 @@ func add_to_tier_deck(card_json: Dictionary) -> void:
 		tier_decks[card_tier].append(card_json['id'])
 
 
+func remove_from_tier_deck(card_json: Dictionary) -> void:
+	var tier_deck = card_json['tier'] - 1
+	tier_decks[tier_deck].erase(card_json['id'])
+
+
 # Adds all cards in tier_decks
 func set_deck() -> void:
 	for it in range(deck.size() - 1):
@@ -65,7 +70,12 @@ func add_revealed_card(tier: int) -> void:
 	
 	var card_json = get_card_json(get_card_deck_id(rand_card_id, tier))
 	$CardManager.set_card_status(card_json, REVEALED_GIZMO)
-	get_parent().add_revealed_card(card_json)
+	Server.add_revealed_card(card_json)
+
+
+func remove_revealed_card(card_json: Dictionary) -> void:
+	var tier_deck = card_json['tier'] - 1
+	revealed_cards[tier_deck].erase(card_json['id'])
 
 
 # Fills revealed_cards row
@@ -97,10 +107,23 @@ func get_tier_decks_count() -> Array:
 	return tier_decks_count
 
 
-func get_start_card(player_id: String) -> Dictionary:
+func get_start_card(player_container) -> Dictionary:
 	var new_start_card = start_card
+	
+	$CardManager.set_card_owner(new_start_card, player_container.peer_id)
 	$CardManager.set_card_status(new_start_card, ACTIVE_GIZMO)
 	$CardManager.set_card_usable(new_start_card, true)
-	$CardManager.set_card_owner(new_start_card, player_id)
-	emit_signal("player_received_card", player_id, START_CARD_ID)
+	player_container.stats['gizmos'].append(START_CARD_ID)
+	
 	return new_start_card
+
+
+func _on_CardManager_removed_card(card_json):
+	match card_json['status']:
+		RESEARCH_GIZMO:
+			remove_from_tier_deck(card_json)
+		REVEALED_GIZMO:
+			remove_revealed_card(card_json)
+			add_revealed_card(card_json['tier'] - 1)
+		_:
+			print("This should not happen")

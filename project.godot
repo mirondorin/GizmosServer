@@ -40,6 +40,7 @@ run/main_scene="res://Scenes/SceneHandler.tscn"
 EnergyManager="*res://Scripts/EnergyManager.gd"
 Server="*res://Scenes/Server.tscn"
 FlagManager="*res://Scripts/FlagManager.gd"
+DeckManager="*res://Scenes/DeckManager.tscn"
 
 [rendering]
 

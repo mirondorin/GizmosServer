@@ -75,10 +75,8 @@ func generate_player_order():
 
 # Adds last active player at end of player order array
 func set_next_player():
-	print("Before: ", player_order)
 	var last_active_player = player_order.pop_front()
 	player_order.push_back(last_active_player)
-	print("After: ", player_order)
 
 
 func get_active_player() -> String:
@@ -88,10 +86,6 @@ func get_active_player() -> String:
 # Returns player container node
 func get_player_container(player_id: String):
 	return get_node(player_id)
-
-
-func _on_DeckManager_player_received_card(player_id: String, card_deck_id: int) -> void:
-	get_node(player_id).add_card(card_deck_id)
 
 
 # Reset flags, action, free actions and excess energy of player

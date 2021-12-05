@@ -7,3 +7,4 @@
 script = ExtResource( 1 )
 
 [node name="CardManager" parent="." instance=ExtResource( 2 )]
+[connection signal="removed_card" from="CardManager" to="." method="_on_CardManager_removed_card"]

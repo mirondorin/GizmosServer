@@ -50,7 +50,7 @@ remote func player_loaded():
 
 
 func _on_GameState_players_loaded():
-	$DeckManager.fill_all_revealed()
+	DeckManager.fill_all_revealed()
 	EnergyManager.restock_energy_row()
 	rpc_id(0, "setup_game")
 
@@ -75,7 +75,8 @@ func new_active_player():
 
 remote func fetch_start_card():
 	var player_id = str(get_tree().get_rpc_sender_id())
-	rpc_id(0, "return_start_card", $DeckManager.get_start_card(player_id), player_id)
+	var player_container = $GameState.get_player_container(player_id)
+	rpc_id(0, "return_start_card", DeckManager.get_start_card(player_container), player_id)
 
 
 func add_revealed_card(card_json: Dictionary):
@@ -91,7 +92,7 @@ func add_to_energy_row(energy_row: Array):
 
 
 remote func fetch_tier_decks_count():
-	rpc_id(0, "return_tier_decks_count", $DeckManager.get_tier_decks_count())
+	rpc_id(0, "return_tier_decks_count", DeckManager.get_tier_decks_count())
 
 
 remote func process_event(action_id: int, info):
@@ -107,6 +108,10 @@ func successful_action(player_id: String):
 
 func player_stats_updated(player_id: String, player_stats: Dictionary):
 	rpc_id(0, "player_stats_updated", player_id, player_stats)
+
+
+func give_player_card(card_json: Dictionary, player_id: String):
+	rpc_id(0, "give_player_card", card_json, player_id)
 
 
 func display_end_btn(player_id: String):

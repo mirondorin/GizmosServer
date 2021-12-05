@@ -15,3 +15,7 @@ func reset_player_flags(player_container):
 
 func player_picked(player_container, energy_type: int):
 	player_container.flags['picked'][energy_type] = 1
+
+
+func player_archived(player_container):
+	player_container.flags['archived'] = true
