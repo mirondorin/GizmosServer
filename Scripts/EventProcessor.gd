@@ -7,6 +7,7 @@ enum {ARCHIVE, PICK, BUILD, RESEARCH}
 func _ready():
 	$ArchiveProcessor.action_id = ARCHIVE
 	$PickProcessor.action_id = PICK
+	$BuildProcessor.action_id = BUILD
 
 
 func process_event(player_container, action_id: int, info):
@@ -24,3 +25,5 @@ func get_action_processor(action_id: int):
 			return $ArchiveProcessor
 		PICK:
 			return $PickProcessor
+		BUILD:
+			return $BuildProcessor

@@ -20,7 +20,8 @@ var stats = {
 var flags = {
 	"archived": false,
 	"picked": [0, 0, 0, 0],
-	"built": [0, 0, 0, 0, 0], # Last element is if built from archive
+	"built": [0, 0, 0, 0],
+	"archive_built": false,
 	"built_tier": [0, 0, 0]
 }
 var build_discount = {
@@ -54,8 +55,12 @@ func get_free_action_count(action_id: int) -> int:
 	return free_action[action[action_id]]
 
 
+func get_energy_type_amount(energy_type: int) -> int:
+	return stats['energy'][energy_type]
+
+
 # Returns total energy of player
-func get_energy_count() -> int:
+func get_energy_amount() -> int:
 	var sum = 0
 	for count in stats['energy']:
 		sum += count
@@ -63,7 +68,7 @@ func get_energy_count() -> int:
 
 
 func get_energy_space() -> int:
-	return stats['max_energy'] - get_energy_count()
+	return stats['max_energy'] - get_energy_amount()
 
 
 func add_energy(energy_type: int) -> void:
