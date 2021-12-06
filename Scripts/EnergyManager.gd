@@ -54,11 +54,9 @@ func rand_from_dispenser() -> int:
 
 
 # Add energy to dispenser when a player builds a card
-func add_to_energy_dispenser(energy_arr: Array) -> void:
-	for energy_type in range(LAST_ENERGY_TYPE):
-		var count = energy_arr[energy_type]
-		for _it in range (0, count):
-			energy_dispenser.append(energy_type)
+func add_to_energy_dispenser(energy_type: int, amount: int) -> void:
+	for _el in range(amount):
+		energy_dispenser.append(energy_type)
 
 
 func give_player_energy(player_container, energy_type: int) -> void:

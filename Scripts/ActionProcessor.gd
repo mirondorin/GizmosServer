@@ -19,8 +19,8 @@ func available_action(player_container) -> bool:
 	return false
 
 
-# Uses normal action first if available, else decrementes free action
-func use_first_avaiable_action(player_container) -> void:
+# Uses normal action first if available, else decrements free action
+func use_first_available_action(player_container) -> void:
 	var used_action = use_action(player_container)
 	if used_action:
 		Server.display_end_btn(player_container.peer_id)
