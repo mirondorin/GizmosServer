@@ -59,6 +59,10 @@ func get_energy_type_amount(energy_type: int) -> int:
 	return stats['energy'][energy_type]
 
 
+func get_excess_energy_type_amount(energy_type: int) -> int:
+	return stats['excess_energy'][energy_type]
+
+
 # Returns total energy of player
 func get_energy_amount() -> int:
 	var sum = 0

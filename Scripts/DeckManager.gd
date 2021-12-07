@@ -11,8 +11,6 @@ enum {ACTIVE_GIZMO, ARCHIVED_GIZMO, RESEARCH_GIZMO, REVEALED_GIZMO}
 const TIER_THREE_REMOVE = 20
 const START_CARD_ID = 108
 
-signal player_received_card(player_id, card_deck_id)
-
 
 func _init():
 	var deck_obj = Deck.new()

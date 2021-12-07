@@ -88,15 +88,19 @@ func get_player_container(player_id: String):
 	return get_node(player_id)
 
 
+func reset_player_excess_energy(player_container):
+	player_container.stats['excess_energy'] = [0, 0, 0, 0]
+
+
 # Reset flags, action, free actions and excess energy of player
 func reset_player_status(player_id: String):
 	var player_container = get_player_container(player_id)
 	player_container.set_used_action(false)
+	reset_player_excess_energy(player_container)
 	FlagManager.reset_player_flags(player_container)
 	
 
 func end_turn() -> void:
-	# TODO: Reset flags, action, free actions and excess energy of player
 	reset_player_status(get_active_player())
 	set_next_player()
 	Server.new_active_player()
