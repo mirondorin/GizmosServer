@@ -116,6 +116,19 @@ func get_start_card(player_container) -> Dictionary:
 	return new_start_card
 
 
+func get_research_cards(research_amount: int, tier: int) -> Array:
+	var tier_decks_copy = tier_decks[tier]
+	var research_cards = []
+	
+	for _el in range(research_amount):
+		var rand_card_id = tier_decks_copy[randi() % tier_decks_copy.size()]
+		tier_decks_copy.erase(rand_card_id)
+		rand_card_id = get_card_deck_id(rand_card_id, tier)
+		research_cards.append(get_card_json(rand_card_id))
+
+	return research_cards
+
+
 func _on_CardManager_removed_card(card_json):
 	match card_json['status']:
 		RESEARCH_GIZMO:

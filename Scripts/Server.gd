@@ -114,6 +114,10 @@ func give_player_card(card_json: Dictionary, prev_card_state: int, player_id: St
 	rpc_id(0, "give_player_card", card_json, prev_card_state, player_id)
 
 
+func give_research_cards(player_id: String, research_cards: Array):
+	rpc_id(int(player_id), "return_research_cards", research_cards)
+
+
 func display_end_btn(player_id: String):
 	rpc_id(int(player_id), "display_end_btn")
 

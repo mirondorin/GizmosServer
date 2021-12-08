@@ -8,6 +8,7 @@ func _ready():
 	$ArchiveProcessor.action_id = ARCHIVE
 	$PickProcessor.action_id = PICK
 	$BuildProcessor.action_id = BUILD
+	$ResearchProcessor.action_id = RESEARCH
 
 
 func process_event(player_container, action_id: int, info):
@@ -27,3 +28,5 @@ func get_action_processor(action_id: int):
 			return $PickProcessor
 		BUILD:
 			return $BuildProcessor
+		RESEARCH:
+			return $ResearchProcessor

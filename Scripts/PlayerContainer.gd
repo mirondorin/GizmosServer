@@ -88,5 +88,9 @@ func get_archive_space() -> int:
 	return stats['max_archive'] - get_archive_amount()
 	
 
+func get_research_amount() -> int:
+	return stats['max_research']
+
+
 func add_card(card_deck_id: int) -> void:
 	stats['gizmos'].append(card_deck_id)
