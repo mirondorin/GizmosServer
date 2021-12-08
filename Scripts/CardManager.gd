@@ -24,6 +24,7 @@ func give_active_card(player_container, card_json: Dictionary) -> void:
 		remove_from_archive(player_container, card_deck_id)
 	else:
 		set_card_owner(card_json, player_container.peer_id)
+
 	FlagManager.player_built(player_container, card_json)
 	emit_signal("removed_card", card_json)
 	set_card_status(card_json, get_parent().ACTIVE_GIZMO)

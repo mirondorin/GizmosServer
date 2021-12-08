@@ -59,6 +59,10 @@ func send_status_msg(player_id: String, msg: String):
 	rpc_id(int(player_id), "receive_status_msg", msg)
 
 
+func send_warning_msg(player_id: String, msg: String):
+	rpc_id(int(player_id), "receive_warning_msg", msg)
+
+
 remote func fetch_player_order():
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "return_player_order", $GameState.player_order)

@@ -6,7 +6,6 @@ var energy_row = [0, 0, 0, 0]
 
 const MAX_ENERGY_TYPE = 13
 const MAX_ENERGY_ROW = 6
-const LAST_ENERGY_TYPE = 4
 
 # Energy color type codes
 enum {RED, YELLOW, BLUE, BLACK}
@@ -29,7 +28,7 @@ func init_energy_dispenser_row() -> void:
 func add_to_energy_row() -> void:
 	var rand_energy = rand_from_dispenser()
 	energy_row[rand_energy] += 1
-	get_tree().get_root().get_node("Server").add_to_energy_row(energy_row)
+	Server.add_to_energy_row(energy_row)
 
 
 func remove_from_energy_row(energy_type: int) -> void:
