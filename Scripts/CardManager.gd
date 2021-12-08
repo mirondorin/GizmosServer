@@ -18,14 +18,22 @@ func give_archived_card(player_container, card_json: Dictionary) -> void:
 
 
 func give_active_card(player_container, card_json: Dictionary) -> void:
-	set_card_owner(card_json, player_container.peer_id)
+	var card_deck_id = get_parent().get_card_deck_id(card_json['id'], card_json['tier'] - 1)
+	
+	if  card_json.has('owner_id'):
+		remove_from_archive(player_container, card_deck_id)
+	else:
+		set_card_owner(card_json, player_container.peer_id)
 	FlagManager.player_built(player_container, card_json)
 	emit_signal("removed_card", card_json)
 	set_card_status(card_json, get_parent().ACTIVE_GIZMO)
 	set_card_usable(card_json, true)
 	
-	var card_deck_id = get_parent().get_card_deck_id(card_json['id'], card_json['tier'] - 1)
 	player_container.stats['gizmos'].append(card_deck_id)
+
+
+func remove_from_archive(player_container, card_deck_id: int) -> void:
+	player_container.stats['archive'].erase(card_deck_id)
 
 
 func set_card_owner(card_json: Dictionary, player_id: String) -> void:

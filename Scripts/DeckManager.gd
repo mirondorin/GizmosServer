@@ -124,7 +124,10 @@ func get_research_cards(research_amount: int, tier: int) -> Array:
 		var rand_card_id = tier_decks_copy[randi() % tier_decks_copy.size()]
 		tier_decks_copy.erase(rand_card_id)
 		rand_card_id = get_card_deck_id(rand_card_id, tier)
-		research_cards.append(get_card_json(rand_card_id))
+		
+		var card_json = get_card_json(rand_card_id)
+		$CardManager.set_card_status(card_json, RESEARCH_GIZMO)
+		research_cards.append(card_json)
 
 	return research_cards
 
