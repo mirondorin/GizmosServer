@@ -21,5 +21,5 @@ func archive(player_container, card_json: Dictionary):
 	Server.give_player_card(card_json, prev_card_state, player_container.peer_id)
 
 
-func research_archive(card_json: Dictionary):
+func research_archive(card_json: Dictionary) -> bool:
 	return card_json['status'] == DeckManager.RESEARCH_GIZMO

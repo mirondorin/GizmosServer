@@ -117,7 +117,7 @@ func get_start_card(player_container) -> Dictionary:
 
 
 func get_research_cards(research_amount: int, tier: int) -> Array:
-	var tier_decks_copy = tier_decks[tier]
+	var tier_decks_copy = tier_decks[tier].duplicate(true)
 	var research_cards = []
 	
 	for _el in range(research_amount):

@@ -5,12 +5,24 @@ func attempt_action(player_container, card_json: Dictionary) -> bool:
 	if available_action(player_container):
 		if player_can_build_card(player_container, card_json):
 			use_first_available_action(player_container)
-			var prev_card_state = card_json['status']
-			pay_card_cost(player_container, card_json)
-			DeckManager.get_node("CardManager").give_active_card(player_container, card_json)
-			Server.give_player_card(card_json, prev_card_state, player_container.peer_id)
+			build(player_container, card_json)
+			return true
+	elif research_build(card_json):
+		if player_can_build_card(player_container, card_json):
+			build(player_container, card_json)
 			return true
 	return false
+
+
+func build(player_container, card_json: Dictionary):
+	var prev_card_state = card_json['status']
+	pay_card_cost(player_container, card_json)
+	DeckManager.get_node("CardManager").give_active_card(player_container, card_json)
+	Server.give_player_card(card_json, prev_card_state, player_container.peer_id)
+
+
+func research_build(card_json: Dictionary) -> bool:
+	return card_json['status'] == DeckManager.RESEARCH_GIZMO
 
 
 # Returns true if player can afford card
