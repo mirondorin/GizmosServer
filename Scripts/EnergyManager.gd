@@ -45,7 +45,7 @@ func restock_energy_row() -> void:
 # Return value in range [0, 3]. Check above constants for energy type codes
 func rand_from_dispenser() -> int:
 	var dispenser_size = energy_dispenser.size()
-	if dispenser_size == 0:
+	if dispenser_size <= 0:
 		return -1
 	var rand_energy = energy_dispenser[randi() % dispenser_size]
 	energy_dispenser.erase(rand_energy)

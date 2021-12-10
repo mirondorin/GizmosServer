@@ -92,5 +92,6 @@ func get_research_amount() -> int:
 	return stats['max_research']
 
 
-func add_card(card_deck_id: int) -> void:
-	stats['gizmos'].append(card_deck_id)
+# Returns true if player archived gizmo this turn
+func has_archived():
+	return flags['archived']

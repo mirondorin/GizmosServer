@@ -13,15 +13,13 @@ func give_archived_card(player_container, card_json: Dictionary) -> void:
 	emit_signal("removed_card", card_json)
 	set_card_status(card_json, get_parent().ARCHIVED_GIZMO)
 	
-	var card_deck_id = get_parent().get_card_deck_id(card_json['id'], card_json['tier'] - 1)
-	player_container.stats['archive'].append(card_deck_id)
+	player_container.stats['archive'].append(card_json)
 
 
 func give_active_card(player_container, card_json: Dictionary) -> void:
-	var card_deck_id = get_parent().get_card_deck_id(card_json['id'], card_json['tier'] - 1)
 	
 	if  card_json.has('owner_id'):
-		remove_from_archive(player_container, card_deck_id)
+		remove_from_archive(player_container, card_json)
 	else:
 		set_card_owner(card_json, player_container.peer_id)
 
@@ -30,11 +28,13 @@ func give_active_card(player_container, card_json: Dictionary) -> void:
 	set_card_status(card_json, get_parent().ACTIVE_GIZMO)
 	set_card_usable(card_json, true)
 	
-	player_container.stats['gizmos'].append(card_deck_id)
+	player_container.stats['gizmos'].append(card_json)
 
 
-func remove_from_archive(player_container, card_deck_id: int) -> void:
-	player_container.stats['archive'].erase(card_deck_id)
+func remove_from_archive(player_container, card_json: Dictionary) -> void:
+	for card in player_container.stats['archive']:
+		if card['id'] == card_json['id'] and card['tier'] == card_json['tier']:
+			player_container.stats['archive'].erase(card)
 
 
 func set_card_owner(card_json: Dictionary, player_id: String) -> void:

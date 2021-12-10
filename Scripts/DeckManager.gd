@@ -106,12 +106,12 @@ func get_tier_decks_count() -> Array:
 
 
 func get_start_card(player_container) -> Dictionary:
-	var new_start_card = start_card
+	var new_start_card = start_card.duplicate(true)
 	
 	$CardManager.set_card_owner(new_start_card, player_container.peer_id)
 	$CardManager.set_card_status(new_start_card, ACTIVE_GIZMO)
 	$CardManager.set_card_usable(new_start_card, true)
-	player_container.stats['gizmos'].append(START_CARD_ID)
+	player_container.stats['gizmos'].append(new_start_card)
 	
 	return new_start_card
 

@@ -1,7 +1,7 @@
 extends Node
 
 
-enum {ARCHIVE, PICK, BUILD, RESEARCH}
+enum {ARCHIVE, PICK, BUILD, RESEARCH, CARD_EFFECT}
 
 
 func _ready():
@@ -12,10 +12,15 @@ func _ready():
 
 
 func process_event(player_container, action_id: int, info):
-	var action_processor = get_action_processor(action_id)
-	var action_ok = action_processor.attempt_action(player_container, info)
+	var event_ok
+
+	if action_id == CARD_EFFECT:
+		event_ok = $CardEffectProcessor.process_request(player_container, info)
+	else:
+		var action_processor = get_action_processor(action_id)
+		event_ok = action_processor.attempt_action(player_container, info)
 	
-	if action_ok:
+	if event_ok:
 		Server.player_stats_updated(player_container.peer_id, player_container.stats)
 		Server.send_status_msg(player_container.peer_id, "")
 
