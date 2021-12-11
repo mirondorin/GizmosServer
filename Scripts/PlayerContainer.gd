@@ -92,6 +92,35 @@ func get_research_amount() -> int:
 	return stats['max_research']
 
 
-# Returns true if player archived gizmo this turn
-func has_archived():
+func has_archived() -> bool:
 	return flags['archived']
+
+
+# Values of energy_type must be in range {RED, YELLOW, BLUE, BLACK}
+func has_picked(energy_type: Array) -> bool:
+	for el in energy_type:
+		if flags['picked'][el]:
+			return true
+	return false
+
+
+# Values of build_type must be in range {RED, YELLOW, BLUE, BLACK}
+func has_built(build_type: Array) -> bool:
+	for el in build_type:
+		if flags['built'][el]:
+			return true
+	return false
+
+
+func has_archive_built() -> bool:
+	return flags['archive_built']
+
+
+# Values of energy_arr must be in range {RED, YELLOW, BLUE, BLACK, ANY_ENERGY}
+func has_energy_type(energy_arr: Array) -> bool:
+	for energy_type in energy_arr:
+		if energy_type == EnergyManager.ANY_ENERGY:
+			return get_energy_amount() > 0
+		elif stats['energy'][energy_type] or stats['excess_energy'][energy_type]:
+			return true
+	return false

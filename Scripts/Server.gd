@@ -114,6 +114,10 @@ func player_stats_updated(player_id: String, player_stats: Dictionary):
 	rpc_id(0, "player_stats_updated", player_id, player_stats)
 
 
+func player_flags_updated(player_id: String, player_flags: Dictionary):
+	rpc_id(0, "player_flags_updated", player_id, player_flags)
+
+
 func give_player_card(card_json: Dictionary, prev_card_state: int, player_id: String):
 	rpc_id(0, "give_player_card", card_json, prev_card_state, player_id)
 

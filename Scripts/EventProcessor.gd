@@ -3,6 +3,13 @@ extends Node
 
 enum {ARCHIVE, PICK, BUILD, RESEARCH, CARD_EFFECT}
 
+var action_state = {
+	ARCHIVE: 'archive',
+	PICK: 'pick',
+	BUILD: 'build',
+	RESEARCH: 'research'
+}
+
 
 func _ready():
 	$ArchiveProcessor.action_id = ARCHIVE
@@ -22,6 +29,7 @@ func process_event(player_container, action_id: int, info):
 	
 	if event_ok:
 		Server.player_stats_updated(player_container.peer_id, player_container.stats)
+		Server.player_flags_updated(player_container.peer_id, player_container.flags)
 		Server.send_status_msg(player_container.peer_id, "")
 
 
@@ -35,3 +43,7 @@ func get_action_processor(action_id: int):
 			return $BuildProcessor
 		RESEARCH:
 			return $ResearchProcessor
+
+
+func get_action_string(action_id: int) -> String:
+	return action_state[action_id]

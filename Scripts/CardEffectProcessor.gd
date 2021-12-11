@@ -2,13 +2,23 @@ extends Node
 
 
 enum {
-	UPGRADE = 1,
-	CONVERT = 2,
-	ARCHIVE = 3,
-	PICK = 4,
-	BUILD = 5,
-	RESEARCH = 6
+	UPGRADE_CARD = 1,
+	CONVERT_CARD = 2,
+	ARCHIVE_CARD = 3,
+	PICK_CARD = 4,
+	BUILD_CARD = 5,
+	RESEARCH_CARD = 6
 }
+
+
+func process_request(player_container, card_json: Dictionary) -> bool:
+	var player_card = get_player_card(player_container, card_json)
+	
+	if player_card and card_usable(player_card) and card_condition_met(player_container, player_card):
+		use_effect(player_card)
+		set_card_used(player_container, player_card)
+		return true
+	return false
 
 
 func get_player_card(player_container, card_json: Dictionary):
@@ -24,17 +34,6 @@ func set_card_used(player_container, card_json: Dictionary):
 			card['usable'] = false
 
 
-
-func process_request(player_container, card_json: Dictionary) -> bool:
-	var player_card = get_player_card(player_container, card_json)
-	
-	if player_card and card_usable(player_card) and card_condition_met(player_container, player_card):
-		use_effect(player_card)
-		set_card_used(player_container, player_card)
-		return true
-	return false
-
-
 func string_to_func(func_string: String):
 	var func_split = func_string.split('(')
 	var func_name = func_split[0]
@@ -44,7 +43,7 @@ func string_to_func(func_string: String):
 
 
 func card_usable(card_json: Dictionary) -> bool:
-	return card_json['usable'] and not card_json['type_id'] == UPGRADE
+	return card_json['usable'] and not card_json['type_id'] == UPGRADE_CARD
 
 
 # Return true if player did triggering action for card
@@ -77,6 +76,22 @@ func use_effect(card_json: Dictionary):
 func give_rand_energy(count: int):
 	var active_player = Server.get_node("GameState").get_active_player_node()
 	var player_energy_space = active_player.get_energy_space()
+	count = count if count < player_energy_space else player_energy_space
+	
 	for _el in range(count):
 		var energy_type = EnergyManager.rand_from_dispenser()
 		active_player.stats['energy'][energy_type] += 1
+
+
+# params[0] is action_id. Must be in range {ARCHIVE, PICK, BUILD, RESEARCH}
+# params[1] is the amount of free actions player will get
+func add_free_action(params: Array):
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	var action = get_parent().get_action_string(params[0])
+	active_player.free_action[action] += params[1]
+
+#	current_state = action
+#	var format_string = "%s has %d free %s"
+#	var status = format_string % [active_player.name, params[1], action]
+#	game.get_node("ActionStatus").text = status
+#	hint_manager.action_highlight(action)

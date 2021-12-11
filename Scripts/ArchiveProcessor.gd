@@ -2,7 +2,8 @@ extends ActionProcessor
 
 
 func attempt_action(player_container, card_json: Dictionary) -> bool:
-	# Should check if archive action is disabled
+	if archive_disabled(player_container):
+		return false
 	if available_action(player_container):
 		if player_container.get_archive_space() > 0 and not card_json.has('owner_id'):
 			use_first_available_action(player_container)
@@ -23,3 +24,7 @@ func archive(player_container, card_json: Dictionary):
 
 func research_archive(card_json: Dictionary) -> bool:
 	return card_json['status'] == DeckManager.RESEARCH_GIZMO
+
+
+func archive_disabled(player_container) -> bool:
+	return player_container.disabled_actions['archive']

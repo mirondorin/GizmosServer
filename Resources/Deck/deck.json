@@ -736,7 +736,7 @@
             0,
             0
         ],
-        "action": "has_built([4])",
+        "action": "has_archive_built()",
         "effect": "add_free_action([1, 2])",
         "type_id": 5,
         "vp": 3
@@ -750,7 +750,7 @@
             0,
             0
         ],
-        "action": "has_built([4])",
+        "action": "has_archive_built()",
         "effect": "add_free_action([1, 2])",
         "type_id": 5,
         "vp": 3
@@ -764,7 +764,7 @@
             3,
             0
         ],
-        "action": "has_built([4])",
+        "action": "has_archive_built()",
         "effect": "add_free_action([1, 2])",
         "type_id": 5,
         "vp": 3
@@ -778,7 +778,7 @@
             0,
             3
         ],
-        "action": "has_built([4])",
+        "action": "has_archive_built()",
         "effect": "add_free_action([1, 2])",
         "type_id": 5,
         "vp": 3
@@ -1086,7 +1086,7 @@
             0,
             0
         ],
-        "action": "has_built([4])",
+        "action": "has_archive_built()",
         "effect": "give_vp_tokens(2)",
         "type_id": 5,
         "vp": 5
@@ -1100,7 +1100,7 @@
             0,
             0
         ],
-        "action": "has_built([4])",
+        "action": "has_archive_built()",
         "effect": "give_vp_tokens(2)",
         "type_id": 5,
         "vp": 5

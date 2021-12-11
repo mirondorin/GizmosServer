@@ -8,7 +8,7 @@ const MAX_ENERGY_TYPE = 13
 const MAX_ENERGY_ROW = 6
 
 # Energy color type codes
-enum {RED, YELLOW, BLUE, BLACK}
+enum {RED, YELLOW, BLUE, BLACK, ANY_ENERGY}
 
 
 func _init():
