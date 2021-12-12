@@ -122,6 +122,33 @@ func upgrade_capacities(params: Array) -> void:
 	active_player.stats['max_research'] += params[2]
 
 
+# Permanently reduces cost of building gizmos from the archive zone by amount
+func reduce_archive_build(amount: int) -> void:
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	active_player.build_discount['archive'] += amount
+
+
+# Permanently reduces cost of building gizmos from the research zone by amount
+func reduce_research_build(amount: int) -> void:
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	active_player.build_discount['research'] += amount
+
+
+# Permanently reduces cost of building specific tier gizmos by amount
+# params[0] - tier, params[1] - amount
+# 0 index based so if params[0] = 1, tier is actually 2
+func reduce_tier_build(params: Array) -> void:
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	active_player.build_discount['tier'][params[0]] += params[1]
+
+
+# Permanently disable action with action_id for player
+func disable_action(action_id: int) -> void:
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	var action = get_parent().get_action_string(action_id)
+	active_player.disabled_actions[action] = true
+
+
 func _on_BuildProcessor_card_built(card_json: Dictionary):
 	if passive_card(card_json):
 		use_effect(card_json)
