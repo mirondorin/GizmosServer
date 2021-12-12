@@ -139,5 +139,3 @@ func _on_CardManager_removed_card(card_json):
 		REVEALED_GIZMO:
 			remove_revealed_card(card_json)
 			add_revealed_card(card_json['tier'] - 1)
-		_:
-			print("This should not happen")

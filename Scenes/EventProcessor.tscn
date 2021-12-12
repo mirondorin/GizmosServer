@@ -19,3 +19,4 @@ script = ExtResource( 2 )
 [node name="ResearchProcessor" parent="." instance=ExtResource( 5 )]
 
 [node name="CardEffectProcessor" parent="." instance=ExtResource( 6 )]
+[connection signal="card_built" from="BuildProcessor" to="CardEffectProcessor" method="_on_BuildProcessor_card_built"]

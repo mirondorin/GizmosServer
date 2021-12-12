@@ -11,7 +11,7 @@ var default_flags = {
 
 
 func reset_player_flags(player_container):
-	player_container.flags = default_flags
+	player_container.flags = default_flags.duplicate(true)
 
 
 func player_picked(player_container, energy_type: int):

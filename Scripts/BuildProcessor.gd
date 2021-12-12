@@ -1,15 +1,20 @@
 extends ActionProcessor
 
 
+signal card_built(card_json)
+
+
 func attempt_action(player_container, card_json: Dictionary) -> bool:
 	if available_action(player_container):
 		if player_can_build_card(player_container, card_json):
 			use_first_available_action(player_container)
 			build(player_container, card_json)
+			emit_signal("card_built", card_json)
 			return true
 	elif research_build(card_json):
 		if player_can_build_card(player_container, card_json):
 			build(player_container, card_json)
+			emit_signal("card_built", card_json)
 			return true
 	return false
 

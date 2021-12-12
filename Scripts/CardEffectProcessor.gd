@@ -29,7 +29,7 @@ func get_player_card(player_container, card_json: Dictionary):
 	return null
 
 
-func set_card_used(player_container, card_json: Dictionary):
+func set_card_used(player_container, card_json: Dictionary) -> void:
 	for card in player_container.stats['gizmos']:
 		if card_json.hash() == card.hash():
 			card['usable'] = false
@@ -59,7 +59,11 @@ func card_condition_met(player_container, card_json: Dictionary) -> bool:
 	return condition_met
 
 
-func use_effect(card_json: Dictionary):
+func passive_card(card_json: Dictionary):
+	return card_json['type_id'] == UPGRADE_CARD
+
+
+func use_effect(card_json: Dictionary) -> void:
 	var effect_split = card_json['effect'].split('(')
 	var effect_func = effect_split[0]
 	var effect_params = effect_split[1].split(')')[0]
@@ -74,7 +78,7 @@ func use_effect(card_json: Dictionary):
 	call(effect_func, effect_params)
 
 
-func give_rand_energy(count: int):
+func give_rand_energy(count: int) -> void:
 	var active_player = Server.get_node("GameState").get_active_player_node()
 	var player_energy_space = active_player.get_energy_space()
 	count = count if count < player_energy_space else player_energy_space
@@ -86,13 +90,38 @@ func give_rand_energy(count: int):
 
 # params[0] is action_id. Must be in range {ARCHIVE, PICK, BUILD, RESEARCH}
 # params[1] is the amount of free actions player will get
-func add_free_action(params: Array):
-	var active_player = Server.get_node("GameState").get_active_player_node()
-	var action = get_parent().get_action_string(params[0])
-	active_player.free_action[action] += params[1]
+#func add_free_action(params: Array):
+#	var active_player = Server.get_node("GameState").get_active_player_node()
+#	var action = get_parent().get_action_string(params[0])
+#	active_player.free_action[action] += params[1]
 
 #	current_state = action
 #	var format_string = "%s has %d free %s"
 #	var status = format_string % [active_player.name, params[1], action]
 #	game.get_node("ActionStatus").text = status
 #	hint_manager.action_highlight(action)
+
+
+# Gives count vp_tokens to active_player
+func give_vp_tokens(count: int) -> void:
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	active_player.stats['vp_tokens'] += count
+
+
+# TODO FIX IT
+# params HAS TO BE format of [[converting], [result], [amount]]
+# Sets convert tab with the appropiate actions
+#func convert_tab(params) -> void:
+#	active_player.get_node("ConvertTab").set_converter(params)
+
+
+func upgrade_capacities(params: Array) -> void:
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	active_player.stats['max_energy'] += params[0]
+	active_player.stats['max_archive'] += params[1]
+	active_player.stats['max_research'] += params[2]
+
+
+func _on_BuildProcessor_card_built(card_json: Dictionary):
+	if passive_card(card_json):
+		use_effect(card_json)

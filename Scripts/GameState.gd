@@ -62,7 +62,7 @@ func all_players_loaded() -> bool:
 
 
 # Generate random player turn order
-func generate_player_order():
+func generate_player_order() -> void:
 	var copy_players = []
 	for id in players:
 		copy_players.append(id)
@@ -74,7 +74,7 @@ func generate_player_order():
 
 
 # Adds last active player at end of player order array
-func set_next_player():
+func set_next_player() -> void:
 	var last_active_player = player_order.pop_front()
 	player_order.push_back(last_active_player)
 
@@ -92,17 +92,24 @@ func get_player_container(player_id: String):
 	return get_node(player_id)
 
 
-func reset_player_excess_energy(player_container):
+func reset_player_excess_energy(player_container) -> void:
 	player_container.stats['excess_energy'] = [0, 0, 0, 0]
 
 
 # Reset flags, action, free actions and excess energy of player
-func reset_player_status(player_id: String):
+func reset_player_status(player_id: String) -> void:
 	var player_container = get_player_container(player_id)
 	player_container.set_used_action(false)
 	reset_player_excess_energy(player_container)
+	reset_active_cards(player_container)
 	FlagManager.reset_player_flags(player_container)
-	
+
+
+func reset_active_cards(player_container) -> void:
+	var active_cards = player_container.stats['gizmos']
+	for card in active_cards:
+		card['usable'] = true
+
 
 func end_turn() -> void:
 	reset_player_status(get_active_player())
