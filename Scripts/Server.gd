@@ -118,6 +118,10 @@ func player_flags_updated(player_id: String, player_flags: Dictionary):
 	rpc_id(0, "player_flags_updated", player_id, player_flags)
 
 
+func player_card_disabled(card_json: Dictionary, player_id: String):
+	rpc_id(0, "return_disabled_card", card_json, player_id)
+
+
 func give_player_card(card_json: Dictionary, prev_card_state: int, player_id: String):
 	rpc_id(0, "give_player_card", card_json, prev_card_state, player_id)
 

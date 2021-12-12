@@ -17,6 +17,7 @@ func process_request(player_container, card_json: Dictionary) -> bool:
 	if player_card and card_usable(player_card) and card_condition_met(player_container, player_card):
 		use_effect(player_card)
 		set_card_used(player_container, player_card)
+		Server.player_card_disabled(player_card, player_container.peer_id)
 		return true
 	return false
 
