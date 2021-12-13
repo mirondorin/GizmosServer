@@ -134,6 +134,18 @@ func give_research_cards(player_id: String, research_cards: Array):
 	rpc_id(int(player_id), "return_research_cards", research_cards)
 
 
+func give_converter_tab(player_id: String, convert_arr: Array):
+	rpc_id(int(player_id), "return_converter_tab", convert_arr)
+
+
+func give_converter_card(player_id: String, card_json: Dictionary):
+	rpc_id(int(player_id), "return_converter_card", card_json)
+
+
+remote func convert_request(initial: int, result: int, amount: int):
+	$EventProcessor.get_node("CardEffectProcessor").convert_energy(initial, result, amount)
+
+
 func display_end_btn(player_id: String):
 	rpc_id(int(player_id), "display_end_btn")
 

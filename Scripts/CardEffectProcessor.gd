@@ -73,8 +73,9 @@ func use_effect(card_json: Dictionary) -> void:
 	else:
 		effect_params = str2var(effect_params)
 
-#			if card_json['type_id'] == CONVERT:
-#				GameManager.active_player.get_node("ConvertTab").set_gizmo_preview(face)
+	if card_json['type_id'] == CONVERT_CARD:
+		Server.give_converter_card(Server.get_node("GameState").get_active_player(), card_json)
+
 	call(effect_func, effect_params)
 
 
@@ -108,11 +109,28 @@ func give_vp_tokens(count: int) -> void:
 	active_player.stats['vp_tokens'] += count
 
 
-# TODO FIX IT
 # params HAS TO BE format of [[converting], [result], [amount]]
-# Sets convert tab with the appropiate actions
-#func convert_tab(params) -> void:
-#	active_player.get_node("ConvertTab").set_converter(params)
+# Sends convert tab to active player
+func convert_tab(convert_arr: Array) -> void:
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	Server.give_converter_tab(active_player.peer_id, convert_arr)
+
+
+# Checks if player has initial type of energy
+# Give player excess_energy of type result if he does
+func convert_energy(initial: int, result: int, amount: int):
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	
+	if active_player.stats['excess_energy'][initial] > 0:
+		active_player.stats['excess_energy'][initial] -= 1
+		active_player.stats['excess_energy'][result] += amount
+		Server.player_stats_updated(active_player.peer_id, active_player.stats)
+	elif active_player.stats['energy'][initial] > 0:
+		active_player.stats['energy'][initial] -= 1
+		active_player.stats['excess_energy'][result] += amount
+		Server.player_stats_updated(active_player.peer_id, active_player.stats)
+	else:
+		print(active_player.name + " does not have required energy type")
 
 
 func upgrade_capacities(params: Array) -> void:

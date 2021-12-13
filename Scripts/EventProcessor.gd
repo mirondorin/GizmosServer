@@ -21,6 +21,11 @@ func _ready():
 func process_event(player_container, action_id: int, info):
 	var event_ok
 
+	if Server.get_node("GameState").get_active_player() != player_container.peer_id:
+		Server.send_warning_msg(player_container.peer_id, "It is not your turn")
+		return
+
+
 	if action_id == CARD_EFFECT:
 		event_ok = $CardEffectProcessor.process_request(player_container, info)
 	else:

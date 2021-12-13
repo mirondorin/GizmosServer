@@ -102,7 +102,9 @@ func reset_player_status(player_id: String) -> void:
 	player_container.set_used_action(false)
 	reset_player_excess_energy(player_container)
 	reset_active_cards(player_container)
+	Server.player_stats_updated(player_id, player_container.stats)
 	FlagManager.reset_player_flags(player_container)
+	Server.player_flags_updated(player_id, player_container.flags)
 
 
 func reset_active_cards(player_container) -> void:
