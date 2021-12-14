@@ -4,8 +4,11 @@ extends Node
 var players = {}
 var ready_players = {}
 var loaded_players = {}
+var generated_player_order = [] # Used to remember last player
+var player_order = [] # Used for turn order
 
-var player_order = []
+const END_TOTAL_GIZMOS = 16
+const END_TOP_TIER_GIZMOS = 4
 
 signal game_ready
 signal players_loaded
@@ -70,7 +73,8 @@ func generate_player_order() -> void:
 	while copy_players.size() > 0:
 		var player_id = copy_players[randi() % copy_players.size()]
 		copy_players.erase(player_id)
-		player_order.append(player_id)
+		generated_player_order.append(player_id)
+	player_order = generated_player_order.duplicate(true)
 
 
 # Adds last active player at end of player order array
@@ -113,7 +117,19 @@ func reset_active_cards(player_container) -> void:
 		card['usable'] = true
 
 
+# Checks if player built their 4th tier3 card or their 16th card
+# Returns true if that's the case. False otherwise
+func is_end_game() -> bool:
+	return get_active_player_node().get_amount_active() >= END_TOTAL_GIZMOS \
+			or get_active_player_node().get_amount_active_tier(3) >= END_TOP_TIER_GIZMOS
+
+
 func end_turn() -> void:
+	if is_end_game():
+		if get_active_player() == generated_player_order[-1]:
+			Server.end_game()
+			return
+	
 	reset_player_status(get_active_player())
 	set_next_player()
 	Server.new_active_player()

@@ -89,27 +89,12 @@ func give_rand_energy(count: int) -> void:
 		active_player.stats['energy'][energy_type] += 1
 
 
-# params[0] is action_id. Must be in range {ARCHIVE, PICK, BUILD, RESEARCH}
-# params[1] is the amount of free actions player will get
-#func add_free_action(params: Array):
-#	var active_player = Server.get_node("GameState").get_active_player_node()
-#	var action = get_parent().get_action_string(params[0])
-#	active_player.free_action[action] += params[1]
-
-#	current_state = action
-#	var format_string = "%s has %d free %s"
-#	var status = format_string % [active_player.name, params[1], action]
-#	game.get_node("ActionStatus").text = status
-#	hint_manager.action_highlight(action)
-
-
-# Gives count vp_tokens to active_player
 func give_vp_tokens(count: int) -> void:
 	var active_player = Server.get_node("GameState").get_active_player_node()
 	active_player.stats['vp_tokens'] += count
 
 
-# params HAS TO BE format of [[converting], [result], [amount]]
+# params has to be of format [[converting], [result], [amount]]
 # Sends convert tab to active player
 func convert_tab(convert_arr: Array) -> void:
 	var active_player = Server.get_node("GameState").get_active_player_node()
@@ -165,6 +150,27 @@ func disable_action(action_id: int) -> void:
 	var active_player = Server.get_node("GameState").get_active_player_node()
 	var action = get_parent().get_action_string(action_id)
 	active_player.disabled_actions[action] = true
+
+
+# params[0] is action_id
+# params[1] is the amount of free actions player will get
+func add_free_action(params: Array):
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	var action = get_parent().get_action_string(params[0])
+	active_player.free_action[action] += params[1]
+	Server.send_action_status(active_player.peer_id, action, params[0])
+
+
+# params[0] tier of building (0 index based tier 1 is tier 0)
+# params[1] amount of free tier builds
+func add_free_tier_build(params: Array):
+	var active_player = Server.get_node("GameState").get_active_player_node()
+	var action_id = get_parent().BUILD
+	var format_action = "free tier %d build"
+	var action = format_action % (params[0] + 1)
+
+	active_player.free_action['build_tier'][params[0]] += params[1]
+	Server.send_action_status(active_player.peer_id, action, action_id)
 
 
 func _on_BuildProcessor_card_built(card_json: Dictionary):

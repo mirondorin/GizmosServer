@@ -88,6 +88,20 @@ func get_archive_space() -> int:
 	return stats['max_archive'] - get_archive_amount()
 	
 
+func get_amount_active():
+	var amount = 0
+	return stats['gizmos'].size()
+
+
+func get_amount_active_tier(tier: int):
+	var amount = 0
+	
+	for card_json in stats['gizmos']:
+		if card_json['tier'] == tier:
+			amount += 1
+	return amount
+
+
 func get_research_amount() -> int:
 	return stats['max_research']
 

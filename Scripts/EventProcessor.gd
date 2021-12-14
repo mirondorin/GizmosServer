@@ -25,7 +25,6 @@ func process_event(player_container, action_id: int, info):
 		Server.send_warning_msg(player_container.peer_id, "It is not your turn")
 		return
 
-
 	if action_id == CARD_EFFECT:
 		event_ok = $CardEffectProcessor.process_request(player_container, info)
 	else:
@@ -35,7 +34,6 @@ func process_event(player_container, action_id: int, info):
 	if event_ok:
 		Server.player_stats_updated(player_container.peer_id, player_container.stats)
 		Server.player_flags_updated(player_container.peer_id, player_container.flags)
-		Server.send_status_msg(player_container.peer_id, "")
 
 
 func get_action_processor(action_id: int):

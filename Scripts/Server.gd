@@ -55,6 +55,10 @@ func _on_GameState_players_loaded():
 	rpc_id(0, "setup_game")
 
 
+func send_action_status(player_id: String, action: String, action_id: int):
+	rpc_id(int(player_id), "receive_action_status", action, action_id)
+
+
 func send_status_msg(player_id: String, msg: String):
 	rpc_id(int(player_id), "receive_status_msg", msg)
 
@@ -152,3 +156,7 @@ func display_end_btn(player_id: String):
 
 remote func end_turn():
 	$GameState.end_turn()
+
+
+func end_game():
+	rpc_id(0, "end_game")

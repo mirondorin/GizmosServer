@@ -10,7 +10,6 @@ func attempt_action(_player_container, _info):
 	pass
 
 
-
 # Returns true if player can make an action
 func available_action(player_container) -> bool:
 	var free_action_count = player_container.get_free_action_count(action_id)
@@ -25,8 +24,12 @@ func use_first_available_action(player_container) -> void:
 	if used_action:
 		Server.display_end_btn(player_container.peer_id)
 		Server.successful_action(player_container.peer_id)
+		Server.send_status_msg(player_container.peer_id, "")
 		return
 	used_action = use_free_action(player_container)
+	
+	if player_container.get_free_action_count(action_id) <= 0:
+		Server.send_status_msg(player_container.peer_id, "")
 
 
 # Sets player action as used

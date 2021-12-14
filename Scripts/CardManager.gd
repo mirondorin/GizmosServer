@@ -20,6 +20,7 @@ func give_active_card(player_container, card_json: Dictionary) -> void:
 	
 	if  card_json.has('owner_id'):
 		remove_from_archive(player_container, card_json)
+		FlagManager.player_archive_built(player_container)
 	else:
 		set_card_owner(card_json, player_container.peer_id)
 
