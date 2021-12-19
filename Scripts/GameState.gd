@@ -133,3 +133,16 @@ func end_turn() -> void:
 	reset_player_status(get_active_player())
 	set_next_player()
 	Server.new_active_player()
+
+
+# Used for testing cards
+func give_test_card(player_container, card_deck_id: int):
+	var deck_obj = Deck.new()
+	var deck = deck_obj.get_deck()
+	var card = deck[str(card_deck_id)]
+	
+	card['owner_id'] = player_container.peer_id
+	card['status'] = DeckManager.ACTIVE_GIZMO
+	card['usable'] = true
+	player_container.stats['gizmos'].append(card)
+	Server.give_player_card(card, 2, player_container.peer_id)

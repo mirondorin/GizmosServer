@@ -89,7 +89,6 @@ func get_archive_space() -> int:
 	
 
 func get_amount_active():
-	var amount = 0
 	return stats['gizmos'].size()
 
 

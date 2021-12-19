@@ -157,8 +157,13 @@ func disable_action(action_id: int) -> void:
 func add_free_action(params: Array):
 	var active_player = Server.get_node("GameState").get_active_player_node()
 	var action = get_parent().get_action_string(params[0])
+	
+	var format_status = "You are doing free %s"
+	var status_msg = format_status % action
+	
 	active_player.free_action[action] += params[1]
 	Server.send_action_status(active_player.peer_id, action, params[0])
+	Server.send_status_msg(active_player.peer_id, status_msg)
 
 
 # params[0] tier of building (0 index based tier 1 is tier 0)
@@ -166,11 +171,14 @@ func add_free_action(params: Array):
 func add_free_tier_build(params: Array):
 	var active_player = Server.get_node("GameState").get_active_player_node()
 	var action_id = get_parent().BUILD
-	var format_action = "free tier %d build"
-	var action = format_action % (params[0] + 1)
+	var action = get_parent().get_action_string(action_id)
+
+	var format_status = "You are doing free tier %d build"
+	var status_msg = format_status % (params[0] + 1)
 
 	active_player.free_action['build_tier'][params[0]] += params[1]
 	Server.send_action_status(active_player.peer_id, action, action_id)
+	Server.send_status_msg(active_player.peer_id, status_msg)
 
 
 func _on_BuildProcessor_card_built(card_json: Dictionary):

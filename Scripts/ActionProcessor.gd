@@ -29,6 +29,7 @@ func use_first_available_action(player_container) -> void:
 	used_action = use_free_action(player_container)
 	
 	if player_container.get_free_action_count(action_id) <= 0:
+		Server.send_action_status(player_container.peer_id, "", -1)
 		Server.send_status_msg(player_container.peer_id, "")
 
 

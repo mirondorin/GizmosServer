@@ -84,6 +84,7 @@ func new_active_player():
 remote func fetch_start_card():
 	var player_id = str(get_tree().get_rpc_sender_id())
 	var player_container = $GameState.get_player_container(player_id)
+#	$GameState.give_test_card(player_container, 73)
 	rpc_id(0, "return_start_card", DeckManager.get_start_card(player_container), player_id)
 
 

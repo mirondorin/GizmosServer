@@ -5,7 +5,9 @@ signal card_built(card_json)
 
 
 func attempt_action(player_container, card_json: Dictionary) -> bool:
-	if available_action(player_container):
+	if has_free_tier_build(player_container, card_json['tier'] - 1):
+		free_tier_build(player_container, card_json)
+	elif available_action(player_container):
 		if player_can_build_card(player_container, card_json):
 			use_first_available_action(player_container)
 			build(player_container, card_json)
@@ -19,7 +21,22 @@ func attempt_action(player_container, card_json: Dictionary) -> bool:
 	return false
 
 
-func build(player_container, card_json: Dictionary):
+func has_free_tier_build(player_container, tier: int) -> bool:
+	return player_container.free_action['build_tier'][tier] > 0
+
+
+func free_tier_build(player_container, card_json: Dictionary) -> void:
+	var prev_card_state = card_json['status']
+	player_container.free_action['build_tier'][card_json['tier'] - 1] -= 1
+	if player_container.free_action['build_tier'][card_json['tier'] - 1] <= 0:
+		Server.send_action_status(player_container.peer_id, "", -1)
+		Server.send_status_msg(player_container.peer_id, "")
+	
+	DeckManager.get_node("CardManager").give_active_card(player_container, card_json)
+	Server.give_player_card(card_json, prev_card_state, player_container.peer_id)
+
+
+func build(player_container, card_json: Dictionary) -> void:
 	var prev_card_state = card_json['status']
 	pay_card_cost(player_container, card_json)
 	DeckManager.get_node("CardManager").give_active_card(player_container, card_json)
