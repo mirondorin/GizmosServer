@@ -5,6 +5,9 @@ signal card_built(card_json)
 
 
 func attempt_action(player_container, card_json: Dictionary) -> bool:
+	if not valid_owner(player_container, card_json):
+		return false
+	
 	if has_free_tier_build(player_container, card_json['tier'] - 1):
 		free_tier_build(player_container, card_json)
 	elif available_action(player_container):
@@ -19,6 +22,13 @@ func attempt_action(player_container, card_json: Dictionary) -> bool:
 			emit_signal("card_built", card_json)
 			return true
 	return false
+
+
+func valid_owner(player_container, card_json: Dictionary) -> bool:
+	if card_json.has('owner_id') and card_json['owner_id'] != player_container.peer_id:
+		Server.send_warning_msg(player_container.peer_id, "You are not the owner of the card")
+		return false
+	return true
 
 
 func has_free_tier_build(player_container, tier: int) -> bool:
@@ -60,6 +70,7 @@ func player_can_afford(player_container, card_json: Dictionary) -> bool:
 func player_can_build_card(player_container, card_json: Dictionary) -> bool:
 	if player_can_afford(player_container, card_json):
 		return true
+	Server.send_warning_msg(player_container.peer_id, "You can't afford this card")
 	return false
 
 

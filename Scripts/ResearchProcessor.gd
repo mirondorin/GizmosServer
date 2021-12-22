@@ -9,4 +9,7 @@ func attempt_action(player_container, tier: int):
 
 
 func research_disabled(player_container) -> bool:
-	return player_container.disabled_actions['research']
+	if player_container.disabled_actions['research']:
+		Server.send_warning_msg(player_container.peer_id, "You can't research anymore")
+		return true
+	return false
