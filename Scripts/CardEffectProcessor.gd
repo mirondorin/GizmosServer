@@ -150,6 +150,7 @@ func disable_action(action_id: int) -> void:
 	var active_player = Server.get_node("GameState").get_active_player_node()
 	var action = get_parent().get_action_string(action_id)
 	active_player.disabled_actions[action] = true
+	Server.disable_action(action, active_player.peer_id)
 
 
 # params[0] is action_id

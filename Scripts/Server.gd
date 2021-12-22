@@ -151,6 +151,10 @@ remote func convert_request(initial: int, result: int, amount: int):
 	$EventProcessor.get_node("CardEffectProcessor").convert_energy(initial, result, amount)
 
 
+func disable_action(action: String, player_id: String):
+	rpc_id(int(player_id), "disable_action", action, player_id)
+
+
 func display_end_btn(player_id: String):
 	rpc_id(int(player_id), "display_end_btn")
 
