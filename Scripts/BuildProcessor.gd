@@ -8,18 +8,17 @@ func attempt_action(player_container, card_json: Dictionary) -> bool:
 	if not valid_owner(player_container, card_json):
 		return false
 	
-	if has_free_tier_build(player_container, card_json['tier'] - 1):
+	if research_build(card_json):
+		if player_can_build_card(player_container, card_json):
+			build(player_container, card_json)
+			return true
+	elif has_free_tier_build(player_container, card_json['tier'] - 1):
 		free_tier_build(player_container, card_json)
+		return true
 	elif available_action(player_container):
 		if player_can_build_card(player_container, card_json):
 			use_first_available_action(player_container)
 			build(player_container, card_json)
-			emit_signal("card_built", card_json)
-			return true
-	elif research_build(card_json):
-		if player_can_build_card(player_container, card_json):
-			build(player_container, card_json)
-			emit_signal("card_built", card_json)
 			return true
 	return false
 
@@ -44,6 +43,7 @@ func free_tier_build(player_container, card_json: Dictionary) -> void:
 	
 	DeckManager.get_node("CardManager").give_active_card(player_container, card_json)
 	Server.give_player_card(card_json, prev_card_state, player_container.peer_id)
+	emit_signal("card_built", card_json)
 
 
 func build(player_container, card_json: Dictionary) -> void:
@@ -51,6 +51,7 @@ func build(player_container, card_json: Dictionary) -> void:
 	pay_card_cost(player_container, card_json)
 	DeckManager.get_node("CardManager").give_active_card(player_container, card_json)
 	Server.give_player_card(card_json, prev_card_state, player_container.peer_id)
+	emit_signal("card_built", card_json)
 
 
 func research_build(card_json: Dictionary) -> bool:

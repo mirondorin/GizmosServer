@@ -7,6 +7,14 @@ var loaded_players = {}
 var generated_player_order = [] # Used to remember last player
 var player_order = [] # Used for turn order
 
+var default_free_action = {
+	"archive": 0,
+	"pick" : 0,
+	"build": 0,
+	"research": 0,
+	"build_tier": [0, 0, 0]
+}
+
 const END_TOTAL_GIZMOS = 16
 const END_TOP_TIER_GIZMOS = 4
 
@@ -100,15 +108,21 @@ func reset_player_excess_energy(player_container) -> void:
 	player_container.stats['excess_energy'] = [0, 0, 0, 0]
 
 
+func reset_player_free_action(player_container) -> void:
+	player_container.free_action = default_free_action.duplicate(true)
+
+
 # Reset flags, action, free actions and excess energy of player
 func reset_player_status(player_id: String) -> void:
 	var player_container = get_player_container(player_id)
 	player_container.set_used_action(false)
 	reset_player_excess_energy(player_container)
-	reset_active_cards(player_container)
 	Server.player_stats_updated(player_id, player_container.stats)
 	FlagManager.reset_player_flags(player_container)
 	Server.player_flags_updated(player_id, player_container.flags)
+	reset_player_free_action(player_container)
+	Server.player_free_action_updated(player_id, player_container.free_action)
+	reset_active_cards(player_container)
 
 
 func reset_active_cards(player_container) -> void:

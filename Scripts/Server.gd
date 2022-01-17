@@ -123,6 +123,10 @@ func player_flags_updated(player_id: String, player_flags: Dictionary):
 	rpc_id(0, "player_flags_updated", player_id, player_flags)
 
 
+func player_free_action_updated(player_id: String, free_action: Dictionary):
+	rpc_id(0, "player_free_action_updated", player_id, free_action)
+
+
 func player_capacity_updated(player_id: String):
 	rpc_id(0, "player_capacity_updated", player_id)
 

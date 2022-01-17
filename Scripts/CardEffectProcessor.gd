@@ -59,7 +59,7 @@ func card_condition_met(player_container, card_json: Dictionary) -> bool:
 	return condition_met
 
 
-func passive_card(card_json: Dictionary):
+func passive_card(card_json: Dictionary) -> bool:
 	return card_json['type_id'] == UPGRADE_CARD
 
 
