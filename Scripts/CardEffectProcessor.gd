@@ -113,6 +113,7 @@ func convert_energy(initial: int, result: int, amount: int):
 	elif active_player.stats['energy'][initial] > 0:
 		active_player.stats['energy'][initial] -= 1
 		active_player.stats['excess_energy'][result] += amount
+		EnergyManager.add_to_energy_dispenser(initial, 1)
 		Server.player_stats_updated(active_player.peer_id, active_player.stats)
 	else:
 		print(active_player.name + " does not have required energy type")
